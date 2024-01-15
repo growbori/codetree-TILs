@@ -1,7 +1,6 @@
-a, b = map(int, input().split())
+n, m = map(int, input().split())
 
-for _ in range(a):
-    for _ in range(b):
+for i in range(n):
+    for j in range(m):
         print('*', end = ' ')
-
     print()
