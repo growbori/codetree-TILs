@@ -9,6 +9,6 @@ for i in range(a, b+1):
         satisfied = False
 
 if satisfied == True:
-    print('YES')
-else:
     print('NO')
+else:
+    print('YES')
