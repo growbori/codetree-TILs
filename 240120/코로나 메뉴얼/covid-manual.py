@@ -16,6 +16,6 @@ for _ in range(3):
     if cnt >=2 :
         emer = 'E'
     else:
-        emer = 'C'
+        emer = 'N'
 
 print(emer)
