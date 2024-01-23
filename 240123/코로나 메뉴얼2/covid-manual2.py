@@ -17,8 +17,11 @@ for _ in range(3):
         cntC += 1
     else:
         cntD += 1
+
 if cnt >=2:
     emer = 'E'
 else:
-    emer = 'C'
+    emer = ''
+
+
 print(cntA, cntB, cntC, cntD, emer)
