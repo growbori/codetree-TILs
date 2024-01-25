@@ -18,4 +18,4 @@ for i in range(len(sentence)):
 if idx == -1:
     print('None')
 else:
-    print(idx)
+    print(i)
