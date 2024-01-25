@@ -21,4 +21,4 @@ ver_4 = (arr_2d[0][3] + arr_2d[1][3]) /2
 print(ver_1, ver_2, ver_3, ver_4)
 
 sum_val = (divval + divval2)/2
-print(sum_val)
+print('%0.1f' %sum_val)
