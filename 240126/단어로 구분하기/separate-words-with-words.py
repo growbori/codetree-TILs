@@ -1,0 +1,12 @@
+a, b, c, d, e, f,g, h, i, j = input().split()
+
+print(a)
+print(b)
+print(c)
+print(d)
+print(e)
+print(f)
+print(g)
+print(h)
+print(i)
+print(j)
