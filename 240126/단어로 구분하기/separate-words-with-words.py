@@ -1,12 +1,9 @@
-a, b, c, d, e, f,g, h, i, j = input().split()
+# 공백 단위로 문자열을 입력받습니다.
+string = input().split()
 
-print(a)
-print(b)
-print(c)
-print(d)
-print(e)
-print(f)
-print(g)
-print(h)
-print(i)
-print(j)
+# 문자열을 출력합니다.
+for elem in string:
+	print(elem)
+
+
+# 전체 문자열을 받아와서 그 안에 있는 작은 문자열 요소들을 하나씩 출력해온다!
