@@ -5,7 +5,7 @@ def is_magic_num():
     one = n % 10
     summ = ten + one
 
-    if summ % 5 == 0:
+    if summ % 5 == 0 and n % 2 == 0:
         print('Yes')
     else:
         print('No')
