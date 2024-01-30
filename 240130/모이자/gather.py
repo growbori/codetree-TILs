@@ -1,5 +1,5 @@
 n = int(input())
-home = list(input().split(' '))
+home = list(input().split())
 
 result = []
 for i in range(len(home)):
