@@ -8,4 +8,4 @@ for i in range(len(arr)):
 arr_list.pop() 
 sum_arr = sum(arr_list)
 div_arr = sum_arr / len(arr_list)
-print(sum_arr, div_arr)
+print(sum_arr, '%0.1f' %div_arr)
