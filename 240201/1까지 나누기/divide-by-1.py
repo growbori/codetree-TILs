@@ -1,4 +1,4 @@
-n = 50
+n = int(input())
 count = 0
 i = 1
 while 1<= n:
