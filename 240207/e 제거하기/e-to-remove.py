@@ -1,0 +1,5 @@
+s = input()
+s = list(s)
+s.remove('e')
+new_s = ''.join(s)
+print(new_s)
