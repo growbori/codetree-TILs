@@ -1,3 +1,7 @@
 a, b = map(int, input().split())
 
-print(a**b)
+def multi():
+    answer = a**b
+    return answer
+
+print(multi())
