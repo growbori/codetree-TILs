@@ -7,7 +7,9 @@ def calculate(N, M):
         M = M + 25
         N = N * 2
 
-    print(N, M)
+    return N, M
 
 N, M = map(int,input().split())
-calculate(N, M)
+N, M = calculate(N, M)
+
+print(N, M)
