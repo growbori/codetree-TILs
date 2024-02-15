@@ -7,6 +7,6 @@ for i in range(len(full_txt)):
         answer = i
         break
     else:
-        answer = 1
+        answer = -1
 
 print(answer)
