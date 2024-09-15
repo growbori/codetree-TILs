@@ -6,7 +6,7 @@ int main() {
     int a, n;
     cin >> a;
     for (int n = 1; n <= 5; n ++) {
-        cout << 7 * n << " ";
+        cout << a * n << " ";
     }
     return 0;
 }
