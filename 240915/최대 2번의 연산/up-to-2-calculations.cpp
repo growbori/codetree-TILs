@@ -1,26 +1,18 @@
 #include <iostream>
+
 using namespace std;
 
 int main() {
+    // 변수 선언 및 입력
     int a;
     cin >> a;
-
-    // 1번째 과정
-    if (a % 2 == 0) {
-        a = a / 2;
-    } else {
+    
+    if(a % 2 == 0)
+        a /= 2;
+    
+    if(a % 2 == 1)
         a = (a + 1) / 2;
-    }
-
-    // 2번째 과정
-    if (a % 2 == 0) {
-        a = a / 2;
-    } else {
-        a = (a + 1) / 2;
-    }
-
-    // 결과 출력
-    cout << a << endl;
-
+    
+    cout << a;
     return 0;
 }
