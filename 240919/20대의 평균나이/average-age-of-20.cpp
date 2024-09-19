@@ -9,7 +9,7 @@ int main() {
         int a;
         cin >> a;
 
-        if (a >= 30) {
+        if (a / 10 != 2) {
             cout << fixed;
             cout.precision(2);
             cout << sum/cnt << endl;
