@@ -6,14 +6,13 @@ int main() {
     int n ;
     cin >> n;
     int sum = 0;
-    for (int i = 1; i <= n ; i ++) {
+    for (int i = 1; i <= 100 ; i ++) {
+        sum += i;
         if (sum >= n) {
-            cout << i-1;
+            cout << i;
             break;
         }
-        else {
-            sum += i;
-        }
+
     }
     return 0;
 }
