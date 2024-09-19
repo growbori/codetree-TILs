@@ -5,7 +5,7 @@ int main() {
     // 여기에 코드를 작성해주세요.
     int a, b, i;
     cin >> a >> b;
-    if (a >= 0) {
+    if (a > 0) {
         for (i = 1; i <= b; i ++) {
             cout << a;
         }
