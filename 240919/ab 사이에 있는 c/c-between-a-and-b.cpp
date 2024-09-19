@@ -6,25 +6,24 @@ int main() {
     cin >> a >> b >> c;
     int cnt = 0;
 
-    while (true) {
-        if (cnt != 0) {
-            cout << "YES";
-            break;
-        } else {
-            if (a < b) {
-                for (int i = a; i <= b; i++) {
-                    if (i % 7 == 0) {
-                        cnt++;
-                    }
-                }
-            } else {  // 여기에 else 블록의 시작 괄호 추가
-                for (int i = b; i <= a; i++) {
-                    if (i % 7 == 0) {
-                        cnt++;
-                    }
-                }
-            }  // 여기에 else 블록의 끝 괄호 추가
+    if (a < b) {
+        for (int i = a; i <= b; i++) {
+            if (i % c == 0) {
+                cnt++;
+            }
         }
+    } else {
+        for (int i = b; i <= a; i++) {
+            if (i % c == 0) {
+                cnt++;
+            }
+        }
+    }
+
+    if (cnt != 0) {
+        cout << "YES";
+    } else {
+        cout << "NO";  // 만약 `YES`를 출력할 조건이 없다면 `NO`를 출력
     }
 
     return 0;
