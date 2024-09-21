@@ -14,8 +14,16 @@ int main() {
 
         // 문자 출력
         for (int k = i; k < n; k++) {
-            cout << (char)cnt << " ";
-            cnt++;
+            if (cnt == 91) {
+                cnt = 65;
+                cout << (char)cnt << " ";
+                cnt++;
+            }
+            else {
+                cout << (char)cnt << " ";
+                cnt++;
+            }
+
         }
         cout << endl;
     }
