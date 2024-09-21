@@ -3,9 +3,11 @@ using namespace std;
 
 int main() {
     // 여기에 코드를 작성해주세요.
+    int a, b;
+    cin >> a >> b;
     int arr[10];
-    arr[0] = 2;
-    arr[1] = 5;
+    arr[0] = a;
+    arr[1] = b;
     for (int i = 2; i < 10; i ++) {
         arr[i] = arr[i-1] + arr[i-2];
     }
