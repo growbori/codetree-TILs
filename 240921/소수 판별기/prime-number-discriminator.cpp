@@ -15,7 +15,7 @@ int main() {
         cout << "P";
     }
     else {
-        cout << "N";
+        cout << "C";
     }
     return 0;
 }
