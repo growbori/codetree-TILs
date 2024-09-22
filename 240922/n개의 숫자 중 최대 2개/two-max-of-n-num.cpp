@@ -1,4 +1,5 @@
 #include <iostream>
+#include <climits>
 using namespace std;
 
 int main() {
@@ -9,13 +10,13 @@ int main() {
     for (int i = 0; i < n; i ++) {
         cin >> arr[i];
     }
-    int max_num = arr[0];
+    int max_num = INT_MAX;
     for (int j = 1; j < n; j ++) {
         if (max_num < arr[j]) {
             max_num = arr[j];
         }
     }
-    int second = arr[0];
+    int second = -200000000;
     for (int j = 1; j < n; j ++) {
         if (second < arr[j] && arr[j] != max_num) {
             second = arr[j];
