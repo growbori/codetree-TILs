@@ -2,17 +2,17 @@ n = int(input())
 
 arr = list(map(int, input().split()))
 maxnum = -1
-blank = [0] * n
+blank = [0] * 1000
 
 for i in range(n):
-    if maxnum < arr[i] and blank[i] == 0:
-        maxnum = arr[i]
-        blank[i] = 1
-    elif maxnum < arr[i] and blank[i] == 1:
-        maxnum = -1
-    else :
-        continue
-    
+    if maxnum <= arr[i]:
+        blank[arr[i]] += 1
+check = []
+for j in range(1000):
+    if blank[j] == 1:
+        check.append(j)
 
-
-print(maxnum)
+if len(check) != 0:
+    print(check[-1])
+else :
+    print(-1)
