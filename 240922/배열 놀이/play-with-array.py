@@ -1,6 +1,6 @@
 a, b = map(int, input().split())
 nums = list(map(int, input().split()))
-for tc in range(a) :
+for tc in range(b) :
     check = list(map(int, input().split()))
     if check[0] == 1:
         print(nums[check[1]-1])
