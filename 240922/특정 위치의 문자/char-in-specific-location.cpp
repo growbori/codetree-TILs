@@ -5,17 +5,14 @@ int main() {
     // 여기에 코드를 작성해주세요.
     char arr[6] = {'L', 'E', 'B', 'R', 'O', 'S'};
     char c;
-    int i;
+    string ans = "None";
     for (int i = 0; i <6; i ++) {
         cin >> c;
         if (c == arr[i]) {
-            cout << i;
+            ans = to_string(i);
             break;
         }
-
     }
-    if (i == 6) {
-    cout << "None";
-    }
+    cout << ans;
     return 0;
 }
