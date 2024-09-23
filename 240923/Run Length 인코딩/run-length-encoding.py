@@ -6,7 +6,7 @@ for i in range(len(word)-1):
         check = word[i]
         count += 1
 
-    elif  word[i] !=word[i+1] :
+    elif word[i] !=word[i+1] :
         ans.append(check)
         check = word[i+1]
         ans.append(count+1)
@@ -23,8 +23,6 @@ for i in range(len(ans)):
         total += 1;
     elif len(str(ans[i])) == 2:
         total += 2;
-    else:
-        total += 3;
 
 print(total)
 
