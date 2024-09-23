@@ -10,10 +10,10 @@ for i in range(n):
         c = i
 
 check = []
-for j in range(c+1, n):
+for j in range(c, n):
     check.append(arr[j])
 
-if len(check) == 0:
+if len(check) == 1:
     print(0)
 else :
     max_cost = max(check)
