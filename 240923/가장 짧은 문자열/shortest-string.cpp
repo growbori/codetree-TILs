@@ -16,7 +16,7 @@ int main() {
         if (vec[i] < short_word) {
             short_word = vec[i];
         }
-        else if (vec[i] > long_word){
+        if (vec[i] > long_word){
             long_word = vec[i];
         }
     }
