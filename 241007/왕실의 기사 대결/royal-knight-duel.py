@@ -14,14 +14,11 @@ N, M, Q = map(int, input().split())
 #벽으로 둘러싸기
 arr = [[2] * (N+2)] + [[2] + list(map(int, input().split())) + [2] for _ in range(N)] + [[2] * (N+2)]
 units = {}  # 딕셔너리 형태로 저장
-visited = [[0] * (N+2) for _ in range(N+2)]
 init_k = [0] * (M+1)    # 초기 체력 저장 용
 for m in range(1, M+1):
     si, sj, h, w, k = map(int, input().split())
     units[m] = [si, sj, h, w, k]
     init_k[m] = k   # 초기 체력 저장
-    for i in range(si, si + h):
-        visited[i][sj : sj + w] = [m] * w
 
 def push_unit(start, dr):   # s를 밀고, 연쇄처리
     q = []  # 밀 후보를 저장
@@ -39,7 +36,7 @@ def push_unit(start, dr):   # s를 밀고, 연쇄처리
         for i in range(ni, ni + h):
             for j in range(nj, nj + w):
                 if arr[i][j] == 2:  # 벽을 만날 경우 밀 수 없으므로 return
-                    return
+                    return  # 무조건 리턴! break 아님!
                 if arr[i][j] == 1:  # 함정인 경우
                     damage[cur] += 1    # 데미지 누적
 
