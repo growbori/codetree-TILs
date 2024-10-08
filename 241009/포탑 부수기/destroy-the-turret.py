@@ -54,6 +54,7 @@ for T in range(1, K + 1):
 
 
     arr[x][y] = mn + N + M
+    turn[x][y]=T
     half = arr[x][y] // 2
     # 공격자 찾으러 가기
 
