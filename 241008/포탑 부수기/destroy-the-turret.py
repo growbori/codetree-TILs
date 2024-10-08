@@ -1,21 +1,10 @@
-'''
-좌표칸에는 포탑의 공격력이 적힘 (없을수도 있음)
-K 번 반복, but 부서지지 않은 포탑이 1개가 되면 그 즉시 종료
-가장 ㅇ약한 포탑 - 공격자 N+M만큼 공격력 증가
-가장 최근에 공격한 포탑이 가장 약한 포탑
-행과 열의 합이 가장 큰 포탑, 열 값이 가장 큰 포탑 순서
-가장 공격력 높은 포탑, 행과 열의 합이 가장 작은 포탑, 열 값이 가장 작은 포탑 순서
-레이저 -> 포탄
-포탑 정비
-'''
-
 N, M, K = map(int, input().split())
 arr = [list(map(int, input().split())) for _ in range(N)]
 
 def find_attacker(arr, x, y, z, k):
     q= []
     q.append((x, y, [(x, y)]))
-    v= [[0] * N for _ in range(M)]
+    v= [[0] * M for _ in range(N)]
     v[x][y] = 1
     while q:
         ci, cj, path = q.pop(0)
@@ -73,17 +62,17 @@ for _ in range(K):# K 번 반복
         arr[z][k] -= arr[x][y]  # 중심에 있는 건 공격력 전부 감소
         # 주위 8칸은 절반 힘 감소
         for di, dj in ((0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)):
-            ni = (z + di) % (N + 1)  # 모듈러 연산으로 N 범위를 넘어도 순환되도록 처리
-            nj = (k + dj) % (M + 1)
+            ni = (z + di) % N
+            nj = (k + dj) % M
             arr[ni][nj] -= half
 
     # 포탑 정비
-    for i in range(N):
-        for j in range(M):
-            if arr[i][j] > 0:
-                if (i, j) not in path:
-                    arr[i][j] += 1
-
+    if path is not None:
+        for i in range(N):
+            for j in range(M):
+                if arr[i][j] > 0:
+                    if (i, j) not in path:
+                        arr[i][j] += 1
 
 # 가장 큰 포탑의 공격력 구하기
 number_1 = 0
