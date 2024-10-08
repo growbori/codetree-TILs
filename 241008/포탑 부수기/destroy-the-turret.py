@@ -12,7 +12,7 @@ def find_attacker(arr, x, y, z, k):
             return path
         for di, dj in ((0, 1), (1, 0), (0, -1), (-1, 0)):   # 우/하/좌/상 순으로 경로 탐색
             ni, nj = ci + di, cj + dj
-            if 0 <= ni < N and 0 <= nj < N and v[ni][nj] == 0 and arr[ni][nj] > 0:
+            if 0 <= ni < N and 0 <= nj < M and v[ni][nj] == 0 and arr[ni][nj] > 0:
                 q.append((ni, nj, path + [(ni, nj)]))
                 v[ni][nj] = 1
     return None # path가 없는 경우 None을 적기!
@@ -54,25 +54,44 @@ for _ in range(K):# K 번 반복
     if path:
         for i in range(1, len(path)):
             if i == len(path)-1:
-                arr[path[i][0]][path[i][1]] -= arr[x][y]    # 제일 마지막 요소이면 공격력 전부 써서 공격
+                if arr[path[i][0]][path[i][1]] < arr[x][y]:
+                    arr[path[i][0]][path[i][1]] = 0
+                else:
+                    if arr[path[i][0]][path[i][1]] < arr[x][y]:
+                        arr[path[i][0]][path[i][1]] = 0
+                    else:
+                        arr[path[i][0]][path[i][1]] -= arr[x][y]    # 제일 마지막 요소이면 공격력 전부 써서 공격
             else:
-                arr[path[i][0]][path[i][1]] -= half     # 지나가는 요소이면 공격력 절반만 써서 공격
+                if arr[path[i][0]][path[i][1]] <  half:
+                    arr[path[i][0]][path[i][1]] = 0
+                else:
+                    arr[path[i][0]][path[i][1]] -= half     # 지나가는 요소이면 공격력 절반만 써서 공격
     # 아니라면 포탄 공격
     else:
-        arr[z][k] -= arr[x][y]  # 중심에 있는 건 공격력 전부 감소
+        if arr[z][k] < arr[x][y]:
+            arr[z][k] = 0
+        else:
+            arr[z][k] -= arr[x][y]  # 중심에 있는 건 공격력 전부 감소
         # 주위 8칸은 절반 힘 감소
         for di, dj in ((0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)):
             ni = (z + di) % N
             nj = (k + dj) % M
-            arr[ni][nj] -= half
+            if arr[ni][nj] > 0 and (ni, nj) != (x, y):
+                if arr[ni][nj] < half:
+                    arr[ni][nj] = 0
+                else:
+                    arr[ni][nj] -= half
+            else:
+                continue
 
     # 포탑 정비
-    if path is not None:
-        for i in range(N):
-            for j in range(M):
-                if arr[i][j] > 0:
-                    if (i, j) not in path:
-                        arr[i][j] += 1
+    for i in range(N):
+        for j in range(M):
+            if arr[i][j] > 0:
+                if path is not None and (i, j) not in path:  # path가 None이 아닐 때만 조건 검사
+                    arr[i][j] += 1
+                elif path is None:  # path가 None이면 그냥 포탑을 정비
+                    arr[i][j] += 1
 
 # 가장 큰 포탑의 공격력 구하기
 number_1 = 0
