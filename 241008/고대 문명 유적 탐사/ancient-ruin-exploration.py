@@ -45,13 +45,14 @@ def find_you(arr, clr):
 
 for _ in range(K):
     mx_cnt = 0
-    narr = [x[:] for x in arr]
+    
     for rot in range(1, 4):
         for sj in range(3):
             for si in range(3):
+                narr = [x[:] for x in arr]
                 for _ in range(rot):
-                    narr = rotate(arr, si, sj)
-                t = find_you(narr, 0)
+                    narr = rotate(narr, si, sj) # narr이라고 적는거 주의하기! 어디서 구하고자 하는지를 계속 생각하자!
+                t = find_you(narr, 0)   # 돌린거에서 갯수 찾기
                 if mx_cnt < t:
                     mx_cnt = t
                     marr = narr
