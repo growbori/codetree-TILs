@@ -1,56 +1,54 @@
+L, N, Q = map(int, input().split())
+arr = [[2]*(L+2)] + [[2] + list(map(int, input().split())) + [2] for _ in range(L)] + [[2] * (L+2)]
+unit = {}
+power = [0] * (N+1)
+for n in range(1, N+1):
+    i, j, h, w, k = map(int, input().split())
+    unit[n] = [i, j, h, w, k]
+    power[n] = k
+
 di = [-1, 0, 1, 0]
 dj = [0, 1, 0, -1]
-L, N, Q = map(int, input().split())
-arr = [[2] * (L+2)] + [[2] + list(map(int, input().split())) + [2] for _ in range(L)] + [[2] * (L+2)]
-
-units = {}
-power = [0] * (N+1)
-for m in range(1, N+1):
-    i, j, h, w, k = map(int, input().split())
-    units[m] = [i, j, h, w, k]
-    power[m] = k
-
-def find_damage(start, dr):
+def find_warrior(start, dr):
     q = []
-    q.append(start)
     pset = set()
+    q.append(start)
     pset.add(start)
-    damage = [0] *(N+1)
+    battle = [0] * (N+1)
     while q:
         cur = q.pop(0)
-        ci, cj, h, w, k = units[cur]
+        ci, cj, h, w, k = unit[cur]
         ni, nj = ci + di[dr], cj + dj[dr]
         for i in range(ni, ni + h):
             for j in range(nj, nj + w):
                 if arr[i][j] == 2:
                     return
                 if arr[i][j] == 1:
-                    damage[cur] += 1
-        
-        for idx in units:
-            if idx in pset:
-                continue
-            ti, tj, th, tw, tk = units[idx]
-            if ni <= ti + th - 1 and ti <= ni + h -1 and nj <= tj + tw -1 and tj <= nj + w -1:
+                    battle[cur] += 1
+        for idx in unit:
+            if idx in pset : continue
+            ti, tj, th, tw, tk = unit[idx]
+            if ni <= ti + th -1 and ti <= ni+h - 1 and nj <= tj + tw-1 and tj <= nj + w -1:
                 q.append(idx)
                 pset.add(idx)
-            
-    damage[start] = 0
+
+    battle[start] = 0
     for idx in pset:
-        si, sj, h, w, k = units[idx]
-        if k <= damage[idx]:
-            units.pop(idx)
+        i, j, h, w, k = unit[idx]
+        if k <= battle[idx]:
+            unit.pop(idx)
         else:
-            ni, nj = si + di[dr], sj + dj[dr]
-            units[idx] = [ni, nj, h, w, k-damage[idx]]
+            ni, nj = i + di[dr], j + dj[dr]
+            unit[idx] = [ni, nj, h, w, k-battle[idx]]
 
 
 for _ in range(Q):
     idx, dr = map(int, input().split())
-    if idx in units:
-        find_damage(idx, dr)
+    if idx in unit:
+        find_warrior(idx, dr)
 
 ans = 0
-for idx in units:
-    ans += power[idx] - units[idx][4]
+for idx in unit:
+    ans += power[idx] - unit[idx][4]
+
 print(ans)
