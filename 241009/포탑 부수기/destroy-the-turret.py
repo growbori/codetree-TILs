@@ -42,49 +42,63 @@ def bomb(si,sj,ei,ej):
             arr[ni][nj] = max(0, arr[ni][nj]-d//2)
             fset.add((ni,nj))
 
+
+def count_potap():
+    cnt = 0
+    for i in range(N):
+        for j in range(M):
+            if arr[i][j] > 0:
+                cnt += 1
+    return cnt
+
+
 for T in range(1, K + 1):
-    # [1] 공격자 선정: 공격력 낮은->가장 최근 공격자->행+열(큰)->열(큰)
-    mn, mx_turn, si, sj = 5001, 0, -1, -1
-    for i in range(N):
-        for j in range(M):
-            if arr[i][j]<=0:    continue    # 포탑이 아니면 skip
-            if mn>arr[i][j] or (mn==arr[i][j] and mx_turn<turn[i][j]) or \
-                (mn==arr[i][j] and mx_turn==turn[i][j] and si+sj<i+j) or \
-                (mn==arr[i][j] and mx_turn==turn[i][j] and si+sj==i+j and sj<j):
-                mn, mx_turn, si, sj = arr[i][j], turn[i][j], i, j   # si,sj 공격자
-
-    # [2] 공격(공격당할 포탑선정) & 포탑부서짐
-    # 2-1) 공격 당할 포탑 선정: 공격력 높은->가장 오래전 공격->행+열(작은)->열(작은)
-    mx, mn_turn, ei, ej = 0, T, N, M
-    for i in range(N):
-        for j in range(M):
-            if arr[i][j]<=0:    continue    # 포탑이 아니면 skip
-            if mx<arr[i][j] or (mx==arr[i][j] and mn_turn>turn[i][j]) or \
-                (mx==arr[i][j] and mn_turn==turn[i][j] and ei+ej>i+j) or \
-                (mx==arr[i][j] and mn_turn==turn[i][j] and ei+ej==i+j and ej>j):
-                mx, mn_turn, ei, ej = arr[i][j], turn[i][j], i, j   # ei,ej 공격대상자
-
-    # 2-2) 레이저공격 (우하좌상 순서로 최단거리이동-BFS, %N, %M 처리 필요(양끝연결))
-    arr[si][sj]+=(N+M)  # 공격력 상승        # 즉시반영시 가장 센 포탑이 될 수도 있음
-    turn[si][sj]=T      # 이번턴에 공격
-    fset = set()
-    fset.add((si,sj))
-    fset.add((ei,ej))
-    if bfs(si,sj,ei,ej)==False:     # 레이저공격 실패
-
-        # 2-3) 포탄공격(레이저로 목적지 도달 못할 경우)
-        bomb(si,sj,ei,ej)
-
-    # [3] 포탑정비(공격에 상관없었던 포탑들 +1)
-    for i in range(N):
-        for j in range(M):
-            if arr[i][j]>0 and (i,j) not in fset:
-                arr[i][j]+=1
-
-    cnt = N*M
-    for lst in arr:
-        cnt-=lst.count(0)
-    if cnt<=1:              # 남은 포탑이 1이하면 종료!
+    t = count_potap()
+    if t == 1:
         break
+    else:
+    # [1] 공격자 선정: 공격력 낮은->가장 최근 공격자->행+열(큰)->열(큰)
+        mn, mx_turn, si, sj = 5001, 0, -1, -1
+        for i in range(N):
+            for j in range(M):
+                if arr[i][j]<=0:    continue    # 포탑이 아니면 skip
+                if mn>arr[i][j] or (mn==arr[i][j] and mx_turn<turn[i][j]) or \
+                    (mn==arr[i][j] and mx_turn==turn[i][j] and si+sj<i+j) or \
+                    (mn==arr[i][j] and mx_turn==turn[i][j] and si+sj==i+j and sj<j):
+                    mn, mx_turn, si, sj = arr[i][j], turn[i][j], i, j   # si,sj 공격자
 
-print(max(map(max, arr)))
+        # [2] 공격(공격당할 포탑선정) & 포탑부서짐
+        # 2-1) 공격 당할 포탑 선정: 공격력 높은->가장 오래전 공격->행+열(작은)->열(작은)
+        mx, mn_turn, ei, ej = 0, T, N, M
+        for i in range(N):
+            for j in range(M):
+                if arr[i][j]<=0:    continue    # 포탑이 아니면 skip
+                if mx<arr[i][j] or (mx==arr[i][j] and mn_turn>turn[i][j]) or \
+                    (mx==arr[i][j] and mn_turn==turn[i][j] and ei+ej>i+j) or \
+                    (mx==arr[i][j] and mn_turn==turn[i][j] and ei+ej==i+j and ej>j):
+                    mx, mn_turn, ei, ej = arr[i][j], turn[i][j], i, j   # ei,ej 공격대상자
+
+        # 2-2) 레이저공격 (우하좌상 순서로 최단거리이동-BFS, %N, %M 처리 필요(양끝연결))
+        arr[si][sj]+=(N+M)  # 공격력 상승        # 즉시반영시 가장 센 포탑이 될 수도 있음
+        turn[si][sj]=T      # 이번턴에 공격
+        fset = set()
+        fset.add((si,sj))
+        fset.add((ei,ej))
+        if bfs(si,sj,ei,ej)==False:     # 레이저공격 실패
+
+            # 2-3) 포탄공격(레이저로 목적지 도달 못할 경우)
+            bomb(si,sj,ei,ej)
+
+        # [3] 포탑정비(공격에 상관없었던 포탑들 +1)
+        for i in range(N):
+            for j in range(M):
+                if arr[i][j]>0 and (i,j) not in fset:
+                    arr[i][j]+=1
+
+
+number_1 = 0
+for i in range(N):
+    for j in range(M):
+        if arr[i][j] > number_1:
+            number_1 = arr[i][j]
+print(number_1)
