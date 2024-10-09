@@ -46,7 +46,7 @@ for cj, dr in units:
         exit_set = set()
     else:
         arr[ci-1][cj] = arr[ci + 1][cj] = nums
-        arr[ci][cj-1:cj+1] = [nums] * 3
+        arr[ci][cj-1:cj+2] = [nums] * 3
         nums += 1
         exit_set.add((ci + di[dr], cj + dj[dr]))
         ans += bfs(ci, cj)
