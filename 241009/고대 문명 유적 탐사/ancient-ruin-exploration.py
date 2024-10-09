@@ -47,7 +47,7 @@ def find_you(arr, clr):
 
 for _ in range(K):
     mx_cnt = 0
-    for rot in (1, 4):
+    for rot in range(1, 4):
         for sj in range(3):
             for si in range(3):
                 narr = [x[:] for x in arr]  # 사용하기 전에 복제하는 것이 좋음!
