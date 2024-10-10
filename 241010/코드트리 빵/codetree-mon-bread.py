@@ -19,11 +19,6 @@ step = [[0] * n for _ in range(n)]
 # 방문 여부 표시
 visited = [[False] * n for _ in range(n)]
 
-def in_range(x, y):
-    return 0 <= x < n and 0 <= y < n
-
-def can_go(x, y):
-    return in_range(x, y) and not visited[x][y] and arr[x][y] != 2
 
 def bfs(start_pos):
     # visited, step 모두 초기화
@@ -43,7 +38,8 @@ def bfs(start_pos):
         ci, cj = q.pop(0)
         for di, dj in  ((-1, 0), (0, -1), (0, 1), (1, 0)):  # 4방향 탐색
             ni, nj = ci + di, cj + dj
-            if can_go(ni, nj):
+            # 범위내, 미방문, 이미 완성된 편의점이 아니면
+            if 0<= ni < n and 0 <= nj < n and visited[ni][nj] == 0 and arr[ni][nj] != 2:
                 visited[ni][nj] = True
                 step[ni][nj] = step[ci][cj] + 1
                 q.append((ni, nj))
@@ -58,7 +54,7 @@ def simulate():
         min_x, min_y = -1, -1   # 가장 짧은 거리 초기값 설정해주기
         for di, dj in ((-1, 0), (0, -1), (0, 1), (1, 0)):
             ni, nj = ci + di, cj + dj
-            if in_range(ni, nj) and visited[ni][nj] and min_dist > step[ni][nj]:
+            if 0 <= ni < n and 0 <= nj < n and visited[ni][nj] and min_dist > step[ni][nj]:
                 min_dist = step[ni][nj]
                 min_x, min_y = ni, nj
 
