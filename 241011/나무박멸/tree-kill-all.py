@@ -1,77 +1,105 @@
-INF = -10000
+'''
+나무가 있는 칸의 수 만큼 나무가 성장 -> 총 격자에 몇개의 나무가 있는지 세야함
+기존의 나무들은 인접한 4개의 칸 중 벽, 다른 나무, 제초제 모두 없는 칸에서 번식 진행
+각 칸의 나무 수 // 번식이 가능한 칸의 개수만큼 번식 모든 과정 동시에
+가장 나무가 많이 박멸되는 칸에 제초제 뿌림(4개의 대각선 방향으로 K 만큼 전파) c년 만큼 제초제 있다가 c+1될때 사라짐
+박멸시키는 나무의 수가 동일한 경우에는 행이 작은 순서, 열이 작은 순서로 제초제 사용
+박멸 진행 년수 m, 제초제 확산 범위 k, 제초제가 남아있는 년수 c
+벽 -1
+'''
+
 N, M, K, C = map(int, input().split())
-C = -(C+1)                      # 제초제는 음수처리(C+1년 후에 사라짐)
-arr = [[INF]*(N+2)]+[[INF]+list(map(int, input().split()))+[INF] for _ in range(N)]+[[INF]*(N+2)]
-for i in range(1, N + 1):
-    for j in range(1, N + 1):
-        if arr[i][j]==-1:
-            arr[i][j]=INF       # 건물(벽)을 영구적인 제초제 저리(나무 못자라고, 제초제 못 뻗어감)
+arr = [list(map(int, input().split())) for _ in range(N)]
 
-ans = 0
-for _ in range(M):              # M년동안 진행
-    # [0] 1년의 시작 (제초제 감소)
-    for i in range(1,N+1):
-        for j in range(1,N+1):
-            if arr[i][j]<0:     # 제초제가 뿌려져 있다면 감소 (건물은 -10000 이므로 절대 0 되지 않음)
-                arr[i][j]+=1
+killer = [[0] * N for _ in range(N)]    # 제초제 뿌리고 C동안 영향 받는 것을 나타낼 판
+ans = 0  # 박멸한 나무의 수
+for _ in range(M):
+    # C 1씩 감소시켜 주기
+    for i in range(N):
+        for j in range(N):
+            if killer[i][j] > 0:
+                killer[i][j] -= 1
+    # 1. 나무의 성장
+    narr = [[0] * N for _ in range(N)]  # 성장 정도를 저장할 리스트
+    for i in range(N):
+        for j in range(N):
+            if arr[i][j] > 0:   # 나무가 있는 칸이고 주위에 도 나무가 있으면
+                for di, dj in ((0, 1), (1, 0), (0, -1), (-1, 0)):
+                    ni, nj = i + di, j + dj
+                    # 범위 내이고 나무가 있으면
+                    if 0 <= ni < N and 0 <= nj < N and arr[ni][nj] > 0:
+                        narr[i][j] += 1
+    for i in range(N):
+        for j in range(N):
+            arr[i][j] = arr[i][j] + narr[i][j]
 
-    # [1] 인접한 네칸 중 나무있는 칸 수만큼 동시에 성장
-    narr = [x[:] for x in arr]
-    for i in range(1,N+1):
-        for j in range(1,N+1):
-            if arr[i][j]>0:     # 나무가 있다면, 인접 나무수만큼 성장
-                for ni,nj in ((i-1,j),(i+1,j),(i,j-1),(i,j+1)):
-                    if arr[ni][nj]>0:
-                        narr[i][j]+=1
-    arr=narr
+    # 2. 나무의 번식
+    garr = [[0] * N for _ in range(N)]
+    for i in range(N):
+        for j in range(N):
+            if arr[i][j] > 0:
+                for di, dj in ((0, 1), (1, 0), (0, -1), (-1, 0)):
+                    ni, nj = i + di, j + dj
+                    # 범위 내이고, 벽, 다른 나무, 제초제가 없으면 성장
+                    if 0 <= ni < N and 0 <= nj < N and arr[ni][nj] == 0 and killer[ni][nj] == 0:
+                        garr[i][j] += 1
 
-    # [2] 인접한 빈칸에 번식(나무수//빈칸수 => 동시)
-    narr = [x[:] for x in arr]
-    for i in range(1,N+1):
-        for j in range(1,N+1):
-            if arr[i][j]>0:     # 내가 나무면 번식
-                tlst = []       # 빈칸 좌표 저장
-                for ni,nj in ((i-1,j),(i+1,j),(i,j-1),(i,j+1)):
-                    if arr[ni][nj]==0:
-                        tlst.append((ni,nj))
-                if len(tlst)>0: # 빈칸이 있는 경우 => 번식
-                    d = arr[i][j]//len(tlst)
-                    for ti,tj in tlst:
-                        narr[ti][tj]+=d
-    arr=narr
+    karr = [[0] * N for _ in range(N)]
+    for i in range(N):
+        for j in range(N):
+            if arr[i][j] > 0:
+                for di, dj in ((0, 1), (1, 0), (0, -1), (-1, 0)):
+                    ni, nj = i + di, j + dj
+                    # 범위 내이고, 벽, 다른 나무, 제초제가 없으면 성장
+                    if 0 <= ni < N and 0 <= nj < N and arr[ni][nj] == 0 and killer[ni][nj] == 0:
+                        if (arr[i][j] // garr[i][j]) > 0:
+                            karr[ni][nj] += (arr[i][j] // garr[i][j])
+                        else:
+                            continue
+    # 번식 결과 저장
+    for i in range(N):
+        for j in range(N):
+            arr[i][j] = arr[i][j] + karr[i][j]
 
-    # [3-1] 가장 많이 박멸되는 칸을 찾기
-    mx, mx_i, mx_j = 0, 0, 0
-    for i in range(1,N+1):
-        for j in range(1,N+1):
-            if arr[i][j]>0:     # 나무 있는 칸에 뿌려야 제초제 확산됨
-                cnt = arr[i][j] # 내 자리(중심) 포함
-                for di,dj in ((-1,-1),(-1,1),(1,-1),(1,1)):
-                    for mul in range(1,K+1):    # 뻗어가면서 처리
-                        ni,nj=i+di*mul, j+dj*mul
-                        if arr[ni][nj]<=0:      # 빈땅, 제초제, 건물
-                            break               # 그 방향은 그만!
-                        else:                   # 나무 있는 경우
-                            cnt+=arr[ni][nj]
-                # 최대값이면 갱신
-                if mx < cnt:
-                    mx, mx_i, mx_j = cnt, i, j
-    if mx==0:   # 0이라면 나무가 한 그루도 없는것! => break
-        break
-    ans+=mx
+    # 제초제 뿌리기
+    harr = [[0] * N for _ in range(N)]
+    for i in range(N):
+        for j in range(N):
+            if arr[i][j] > 0:
+                harr[i][j] += arr[i][j]
+                for di, dj in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
+                    for k in range(1, K + 1):
+                        ni, nj = i + di * k, j + dj * k
+                        if 0 <= ni < N and 0 <= nj < N:
+                            if arr[ni][nj] <= 0:
+                                break
+                            else:
+                                harr[i][j] += arr[ni][nj]
 
-    # [3-2] 제초제 살표
-    # 전파되는 도중 벽이 있거나 나무가 아얘 없는 칸이 있는 경우,
-    # 그 칸 까지는 제초제가 뿌려지며 그 이후의 칸으로는 제초제가 전파되지 않습니다
-    arr[mx_i][mx_j]=C       # 중앙자리에 제초제 뿌림
+
+    max_kill = 0
+    mx_kill_loc = (-1, -1)
+    for i in range(N):
+        for j in range(N):
+            if harr[i][j] > max_kill:
+                max_kill = harr[i][j]
+                mx_kill_loc = (i, j)
+
+
+    ci, cj = mx_kill_loc
+    ans += arr[ci][cj]
+    arr[ci][cj] = 0     # 제초제 영향 표시
     for di, dj in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
-        for mul in range(1, K + 1):  # 뻗어가면서 처리
-            ni, nj = mx_i + di * mul, mx_j + dj * mul
-            # 벽(건물)에 제초제 뿌리면 건물이 시간지나면 빈땅이됨!!!
-            if arr[ni][nj]<=0:      # 뻗어가는것이 종료되는 조건: 빈땅, 제초제뿌려진 빈땅, 벽(건물)을 제외!!
-                if C<=arr[ni][nj]:  # 제초제 뿌리는 조건
-                    arr[ni][nj] = C # 뿌리고
-                break
-            else:                   # 나무면
-                arr[ni][nj] = C
+        for k in range(1, K + 1):
+            ni, nj = ci + di * k, cj + dj * k
+            if 0 <= ni < N and 0 <= nj < N :
+                if arr[ni][nj] <= 0:
+                    break
+                else:
+                    ans += arr[ni][nj]
+                    arr[ni][nj] = 0
+                    killer[ni][nj] += (C + 1)
+
+
+
 print(ans)
