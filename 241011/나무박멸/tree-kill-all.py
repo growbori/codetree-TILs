@@ -12,8 +12,16 @@ N, M, K, C = map(int, input().split())
 arr = [list(map(int, input().split())) for _ in range(N)]
 
 killer = [[0] * N for _ in range(N)]    # 제초제 뿌리고 C동안 영향 받는 것을 나타낼 판
+answer = []
 ans = 0  # 박멸한 나무의 수
-for _ in range(M):
+for m in range(M):
+    count_num = 0
+    for i in range(N):
+        for j in range(N):
+            if arr[i][j] > 0:
+                count_num += 1
+    if count_num == 0:
+        break
     # C 1씩 감소시켜 주기
     for i in range(N):
         for j in range(N):
@@ -89,6 +97,7 @@ for _ in range(M):
     ci, cj = mx_kill_loc
     ans += arr[ci][cj]
     arr[ci][cj] = 0     # 제초제 영향 표시
+    killer[ci][cj] += (C+1)
     for di, dj in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
         for k in range(1, K + 1):
             ni, nj = ci + di * k, cj + dj * k
@@ -99,7 +108,6 @@ for _ in range(M):
                     ans += arr[ni][nj]
                     arr[ni][nj] = 0
                     killer[ni][nj] += (C + 1)
-
 
 
 print(ans)
