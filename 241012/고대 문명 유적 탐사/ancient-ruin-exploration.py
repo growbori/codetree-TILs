@@ -2,12 +2,11 @@ K, M = map(int, input().split())
 arr = [list(map(int, input().split())) for _ in range(5)]
 lst = list(map(int, input().split()))
 ans = []
-
 def rotate(arr, si, sj):
     narr = [x[:] for x in arr]
     for i in range(3):
         for j in range(3):
-            narr[si+i][sj+j] = arr[si + 3 - 1 - j][sj + i]
+            narr[si+i][sj+j] = arr[si + 3 - 1 -j][sj+i]
     return narr
 
 def bfs(arr, v, si, sj, clr):
@@ -22,17 +21,18 @@ def bfs(arr, v, si, sj, clr):
         ci, cj = q.pop(0)
         for di, dj in ((0, 1), (1, 0), (0, -1), (-1, 0)):
             ni, nj = ci + di, cj + dj
-            if 0 <= ni < 5 and 0 <= nj < 5 and v[ni][nj] == 0 and arr[ci][cj] == arr[ni][nj]:
-                q.append((ni, nj))
+            if 0 <= ni < 5 and 0 <= nj < 5 and v[ni][nj] == 0 and (arr[ni][nj] == arr[ci][cj]):
                 cnt += 1
-                fset.add((ni, nj))
+                q.append((ni, nj))
                 v[ni][nj] = 1
+                fset.add((ni, nj))
 
     if cnt >= 3:
         if clr == 1:
             for i, j in fset:
                 arr[i][j] = 0
         return cnt
+
     else:
         return 0
 
@@ -42,10 +42,8 @@ def find_you(arr, clr):
     for i in range(5):
         for j in range(5):
             if v[i][j] == 0:
-                t = bfs(arr, v, i, j, clr)
-                cnt += t
+                cnt += bfs(arr, v, i, j, clr)
     return cnt
-
 
 for _ in range(K):
     mx_cnt = 0
@@ -56,11 +54,10 @@ for _ in range(K):
                 for _ in range(rot):
                     narr = rotate(narr, si, sj)
                 t = find_you(narr, 0)
-                if t > mx_cnt:
+                if mx_cnt < t:
                     mx_cnt = t
                     marr = narr
-
-    if mx_cnt == 0:     # 더이상 찾을 유물이 없으면 멈춤!
+    if mx_cnt == 0:
         break
 
     cnt = 0
@@ -75,6 +72,6 @@ for _ in range(K):
             for i in range(4, -1, -1):
                 if arr[i][j] == 0:
                     arr[i][j] = lst.pop(0)
-    ans.append(cnt)
 
+    ans.append(cnt)
 print(*ans)
