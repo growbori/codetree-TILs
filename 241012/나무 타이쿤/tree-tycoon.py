@@ -6,7 +6,8 @@ special.append((N-1, 1))
 special.append((N-2, 0))
 special.append((N-2, 1))
 di = [0, -1, -1, -1, 0, 1, 1, 1]
-dj = [1, 1, 0, -1, -1, 1, 0, 1]
+dj = [1, 1, 0, -1, -1, -1, 0, 1]
+
 check = []
 
 def height_plus(check, arr):
